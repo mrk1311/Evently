@@ -1,40 +1,65 @@
 import React, { useState, useEffect, useRef } from "react";
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
+import { MapContainer, TileLayer, Marker, Popup, useMap } from "react-leaflet";
+import MarkerClusterGroup from "react-leaflet-cluster";
+import "./Map.css";
 
-const MapComponent = ({ position }) => {
-    const mapRef = useRef(null);
-    const markerRef = useRef(null);
-    const circleRef = useRef(null);
+const MapComponent = ({ position, userPosition }) => {
+    // hard coded data for the markers
+    const markers = [
+        { lat: 51.505, lng: -0.09, name: "Marker 1" },
+        { lat: 51.51, lng: -0.1, name: "Marker 2" },
+        { lat: 51.515, lng: -0.095, name: "Marker 3" },
+    ];
 
-    useEffect(() => {
-        if (!mapRef.current) {
-            const mapInstance = L.map("map").setView([51.505, -0.09], 13);
-            L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
-                maxZoom: 19,
-                attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
-            }).addTo(mapInstance);
-            mapRef.current = mapInstance;
-        }
-    }, []);
+    const initialRender = useRef(true);
 
-    useEffect(() => {
-        if (position && mapRef.current) {
-            const { lat, lng, accuracy } = position;
+    function LocateUser() {
+        const map = useMap();
 
-            if (markerRef.current) {
-                mapRef.current.removeLayer(markerRef.current);
-                mapRef.current.removeLayer(circleRef.current);
+        useEffect(() => {
+            if (userPosition !== null && initialRender.current) {
+                map.flyTo(userPosition, map.getZoom());
+                initialRender.current = false;
+                console.log("Initial render");
             }
+        }, []);
+    }
 
-            markerRef.current = L.marker([lat, lng]).addTo(mapRef.current);
-            circleRef.current = L.circle([lat, lng], { radius: accuracy }).addTo(mapRef.current);
+    // LocationMarker component that displays a marker at the user's position
+    function LocationMarker() {
+        return userPosition === null ? null : (
+            <Marker position={userPosition}>
+                <Popup>You are here</Popup>
+            </Marker>
+        );
+    }
 
-            mapRef.current.setView([lat, lng]);
-        }
-    }, [position]);
+    // Map component that re-centers the map when the position changes
+    function CenterMap() {
+        const map = useMap();
+        map.flyTo(position, map.getZoom());
+    }
 
-    return <div id="map" style={{ height: "100%", width: "100%" }}></div>;
+    return (
+        <MapContainer center={position} zoom={13}>
+            <TileLayer
+                url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                attribution='&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+            />
+            <LocateUser />
+            <CenterMap />
+            <LocationMarker />
+            {/* <MarkerClusterGroup>
+                {markers.map((marker, index) => (
+                    <Marker key={index} position={[marker.lat, marker.lng]}>
+                        <Popup>{marker.name}</Popup>
+                    </Marker>
+                ))}
+            </MarkerClusterGroup> */}
+        </MapContainer>
+    );
 };
 
 export default MapComponent;

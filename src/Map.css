@@ -1,0 +1,10 @@
+/* sizing of map container */
+#root {
+    height: 100vh;
+    width: 100vw;
+}
+
+.leaflet-container {
+    height: 100vh;
+    width: 100vw;
+}

@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import "./search.css";
 
 const SearchComponent = ({ onSearch }) => {
     const [searchResults, setSearchResults] = useState([]);
@@ -19,12 +20,24 @@ const SearchComponent = ({ onSearch }) => {
     };
 
     return (
-        <div>
-            <input type="text" id="search-input" placeholder="Search location" />
-            <button id="search-button" onClick={handleSearch}>Search</button>
+        <div id="search-container">
+            <input
+                type="text"
+                id="search-input"
+                placeholder="Search location"
+            />
+            <button id="search-button" onClick={handleSearch}>
+                Search
+            </button>
             <ul id="search-results">
                 {searchResults.map((result) => (
-                    <li key={result.place_id} onClick={() => handleResultClick(result.lat, result.lon)}>
+                    <li
+                        id="search-result"
+                        key={result.place_id}
+                        onClick={() =>
+                            handleResultClick(result.lat, result.lon)
+                        }
+                    >
                         {result.display_name}
                     </li>
                 ))}

@@ -1,9 +1,18 @@
 import React, { useState, useEffect } from "react";
 import MapComponent from "./Map.jsx";
 import SearchComponent from "./Search.jsx";
+import "./App.css";
 
 const App = () => {
-    const [position, setPosition] = useState(null);
+    // const position = { lat: 51.505, lng: -0.09, accuracy: 0 };
+
+    const [position, setPosition] = useState({
+        lat: 0,
+        lng: 0,
+        accuracy: 0,
+    });
+
+    const [userPosition, setUserPosition] = useState(null);
 
     useEffect(() => {
         const options = {
@@ -12,7 +21,11 @@ const App = () => {
             maximumAge: 0,
         };
 
-        const watchId = navigator.geolocation.watchPosition(success, error, options);
+        const watchId = navigator.geolocation.watchPosition(
+            success,
+            error,
+            options
+        );
 
         return () => {
             navigator.geolocation.clearWatch(watchId);
@@ -21,7 +34,8 @@ const App = () => {
 
     const success = (pos) => {
         const { latitude, longitude, accuracy } = pos.coords;
-        setPosition({ lat: latitude, lng: longitude, accuracy });
+        console.log("User position: ", latitude, longitude, accuracy);
+        setUserPosition({ lat: latitude, lng: longitude, accuracy });
     };
 
     const error = (err) => {
@@ -39,12 +53,16 @@ const App = () => {
     };
 
     return (
-        <div style={{display: 'flex', width: '100vw', height: '100vh'}}>
+        <div id="container">
             {/* SearchComponent allows the user to search for a location */}
-            <SearchComponent onSearch={handleSearch} />
-            
+            <SearchComponent id="search" onSearch={handleSearch} />
+
             {/* MapComponent displays the map centered on the user's position */}
-            <MapComponent position={position} />
+            <MapComponent
+                id="map"
+                position={position}
+                userPosition={userPosition}
+            />
         </div>
     );
 };
