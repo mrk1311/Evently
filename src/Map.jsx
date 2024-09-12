@@ -51,13 +51,13 @@ const MapComponent = ({ position, userPosition }) => {
             <LocateUser />
             <CenterMap />
             <LocationMarker />
-            {/* <MarkerClusterGroup>
+            <MarkerClusterGroup chunkedLoading singleMarkerMode>
                 {markers.map((marker, index) => (
                     <Marker key={index} position={[marker.lat, marker.lng]}>
                         <Popup>{marker.name}</Popup>
                     </Marker>
                 ))}
-            </MarkerClusterGroup> */}
+            </MarkerClusterGroup>
         </MapContainer>
     );
 };
