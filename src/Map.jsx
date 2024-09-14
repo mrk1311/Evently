@@ -1,7 +1,12 @@
 import React, { useState, useEffect, useRef } from "react";
-import L from "leaflet";
 import "leaflet/dist/leaflet.css";
-import { MapContainer, TileLayer, Marker, Popup, useMap } from "react-leaflet";
+import {
+    MapContainer,
+    TileLayer,
+    Marker,
+    Popup,
+    useMap,
+} from "./node_modules/react-leaflet/lib/index.js";
 import MarkerClusterGroup from "react-leaflet-cluster";
 import "./Map.css";
 
