@@ -1,12 +1,8 @@
 import React, { useState, useEffect, useRef } from "react";
 import "leaflet/dist/leaflet.css";
-import {
-    MapContainer,
-    TileLayer,
-    Marker,
-    Popup,
-    useMap,
-} from "./node_modules/react-leaflet/lib/index.js";
+import L from "leaflet";
+import { Icon } from "leaflet";
+import { MapContainer, TileLayer, Marker, Popup, useMap } from "react-leaflet";
 import MarkerClusterGroup from "react-leaflet-cluster";
 import "./Map.css";
 
@@ -52,12 +48,19 @@ const MapComponent = ({ position, userPosition }) => {
 
     const initialRender = useRef(true);
 
+    const userIcon = new Icon({
+        iconUrl: "src/assets/map-pin.png",
+        iconSize: [35, 35], // size of the icon
+        // iconAnchor: [22, 94], // point of the icon which will correspond to marker's location
+        // popupAnchor: [-3, -76], // point from which the popup should open relative to the iconAnchor
+    });
+
     function LocateUser() {
         const map = useMap();
 
         useEffect(() => {
             if (userPosition !== null && initialRender.current) {
-                map.flyTo(userPosition, map.getZoom());
+                map.setView(userPosition, map.getZoom());
                 initialRender.current = false;
                 console.log("Initial render");
             }
@@ -67,7 +70,7 @@ const MapComponent = ({ position, userPosition }) => {
     // LocationMarker component that displays a marker at the user's position
     function LocationMarker() {
         return userPosition === null ? null : (
-            <Marker position={userPosition}>
+            <Marker position={userPosition} icon={userIcon}>
                 <Popup>You are here</Popup>
             </Marker>
         );
@@ -76,7 +79,7 @@ const MapComponent = ({ position, userPosition }) => {
     // Map component that re-centers the map when the position changes
     function CenterMap() {
         const map = useMap();
-        map.flyTo(position, map.getZoom());
+        map.setView(position, 13);
     }
 
     return (
