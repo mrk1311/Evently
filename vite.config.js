@@ -6,7 +6,7 @@ export default defineConfig({
     plugins: [react()],
     build: {
         rollupOptions: {
-            external: ["react-leaflet"],
+            external: ["react-leaflet", "react-leaflet-cluster"],
         },
     },
 });
