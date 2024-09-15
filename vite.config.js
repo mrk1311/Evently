@@ -7,9 +7,4 @@ export default defineConfig({
     optimizeDeps: {
         include: ["leaflet", "react-leaflet", "react-leaflet-cluster"],
     },
-    build: {
-        rollupOptions: {
-            external: ["react-leaflet", "react-leaflet-cluster"],
-        },
-    },
 });
