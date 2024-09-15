@@ -2,14 +2,8 @@ import React, { useState, useEffect, useRef } from "react";
 import "leaflet/dist/leaflet.css";
 import L from "leaflet";
 import { Icon } from "leaflet";
-import {
-    MapContainer,
-    TileLayer,
-    Marker,
-    Popup,
-    useMap,
-} from "../node_modules/react-leaflet/lib/index.js";
-// import MarkerClusterGroup from "react-leaflet-cluster";
+import { MapContainer, TileLayer, Marker, Popup, useMap } from "react-leaflet";
+import MarkerClusterGroup from "react-leaflet-cluster";
 import "./Map.css";
 
 const MapComponent = ({ position, userPosition }) => {
@@ -52,14 +46,14 @@ const MapComponent = ({ position, userPosition }) => {
         { lat: 49.969887, lng: 19.828617, name: "Marker 33" }, // Bielsko-Biała, Poland
     ];
 
-    const initialRender = useRef(true);
-
     const userIcon = new Icon({
         iconUrl: "src/assets/map-pin.png",
         iconSize: [35, 35], // size of the icon
         // iconAnchor: [22, 94], // point of the icon which will correspond to marker's location
         // popupAnchor: [-3, -76], // point from which the popup should open relative to the iconAnchor
     });
+
+    const initialRender = useRef(true);
 
     function LocateUser() {
         const map = useMap();
@@ -94,13 +88,13 @@ const MapComponent = ({ position, userPosition }) => {
                 url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                 attribution='&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
             />
-            {/* <MarkerClusterGroup chunkedLoading singleMarkerMode>
+            <MarkerClusterGroup chunkedLoading singleMarkerMode>
                 {markers.map((marker, index) => (
                     <Marker key={index} position={[marker.lat, marker.lng]}>
                         <Popup>{marker.name}</Popup>
                     </Marker>
                 ))}
-            </MarkerClusterGroup> */}
+            </MarkerClusterGroup>
             <LocateUser />
             <CenterMap />
             <LocationMarker />
