@@ -4,8 +4,6 @@ import SearchComponent from "./Search.jsx";
 import "./App.css";
 
 const App = () => {
-    // const position = { lat: 51.505, lng: -0.09, accuracy: 0 };
-
     const [position, setPosition] = useState({
         lat: 0,
         lng: 0,

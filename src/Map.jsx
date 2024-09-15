@@ -2,11 +2,22 @@ import React, { useState, useEffect, useRef } from "react";
 import "leaflet/dist/leaflet.css";
 import L from "leaflet";
 import { Icon } from "leaflet";
-import { MapContainer, TileLayer, Marker, Popup, useMap } from "react-leaflet";
+import {
+    MapContainer,
+    TileLayer,
+    Marker,
+    Popup,
+    useMap,
+    useMapEvents,
+} from "react-leaflet";
 import MarkerClusterGroup from "react-leaflet-cluster";
 import "./Map.css";
 
+let mapCenter = [51.505, -0.09]; // London, UK
+
 const MapComponent = ({ position, userPosition }) => {
+    let zoom;
+
     // hard coded data for the markers
     const markers = [
         { lat: 51.505, lng: -0.09, name: "Marker 1" }, // London, UK
@@ -47,7 +58,7 @@ const MapComponent = ({ position, userPosition }) => {
     ];
 
     const userIcon = new Icon({
-        iconUrl: "src/assets/map-pin.png",
+        iconUrl: "dist/assets/map-pin.png",
         iconSize: [35, 35], // size of the icon
         // iconAnchor: [22, 94], // point of the icon which will correspond to marker's location
         // popupAnchor: [-3, -76], // point from which the popup should open relative to the iconAnchor
@@ -62,7 +73,6 @@ const MapComponent = ({ position, userPosition }) => {
             if (userPosition !== null && initialRender.current) {
                 map.setView(userPosition, map.getZoom());
                 initialRender.current = false;
-                console.log("Initial render");
             }
         }, []);
     }
@@ -78,12 +88,22 @@ const MapComponent = ({ position, userPosition }) => {
 
     // Map component that re-centers the map when the position changes
     function CenterMap() {
-        const map = useMap();
-        map.setView(position, 13);
+        const map = useMapEvents({
+            zoomend: () => {
+                zoom = map.getZoom();
+            },
+            move: () => {
+                if (position.lat === 0 && position.lng === 0) {
+                    mapCenter = map.getCenter();
+                }
+            },
+        });
+
+        map.setView(mapCenter, zoom);
     }
 
     return (
-        <MapContainer center={position} zoom={13}>
+        <MapContainer center={mapCenter} zoom={13}>
             <TileLayer
                 url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                 attribution='&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
