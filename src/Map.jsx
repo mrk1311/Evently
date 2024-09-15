@@ -9,7 +9,7 @@ import {
     Popup,
     useMap,
 } from "../node_modules/react-leaflet/lib/index.js";
-import MarkerClusterGroup from "react-leaflet-cluster";
+// import MarkerClusterGroup from "react-leaflet-cluster";
 import "./Map.css";
 
 const MapComponent = ({ position, userPosition }) => {
@@ -94,13 +94,13 @@ const MapComponent = ({ position, userPosition }) => {
                 url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                 attribution='&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
             />
-            <MarkerClusterGroup chunkedLoading singleMarkerMode>
+            {/* <MarkerClusterGroup chunkedLoading singleMarkerMode>
                 {markers.map((marker, index) => (
                     <Marker key={index} position={[marker.lat, marker.lng]}>
                         <Popup>{marker.name}</Popup>
                     </Marker>
                 ))}
-            </MarkerClusterGroup>
+            </MarkerClusterGroup> */}
             <LocateUser />
             <CenterMap />
             <LocationMarker />
