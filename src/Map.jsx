@@ -58,7 +58,7 @@ const MapComponent = ({ position, userPosition }) => {
     ];
 
     const userIcon = new Icon({
-        iconUrl: "./src/map-pin.png",
+        iconUrl: "https://cdn-icons-png.flaticon.com/512/11216/11216859.png",
         iconSize: [35, 35], // size of the icon
         // iconAnchor: [22, 94], // point of the icon which will correspond to marker's location
         // popupAnchor: [-3, -76], // point from which the popup should open relative to the iconAnchor
