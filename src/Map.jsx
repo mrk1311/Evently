@@ -102,13 +102,60 @@ const MapComponent = ({ position, userPosition }) => {
         map.setView(mapCenter, zoom);
     }
 
+    // Custom icon for the cluster
+
+    const createClusterCustomIcon = (cluster) => {
+        const count = cluster.getChildCount();
+
+        let size = "large";
+        let color = "blue";
+
+        if (count < 4) {
+            color = "rgb(75, 197, 69)";
+        } else if (count < 10) {
+            color = "rgb(232, 149, 88)";
+        } else {
+            color = "rgb(223, 78, 78)";
+        }
+
+        // Tworzenie stylu dla ikony
+        const iconHtml = `
+  <div style="
+    background-color: ${color};
+    width: 30px;
+    height: 30px;
+    border: 1px solid black;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 15px;
+    font-weight: bold;
+  ">
+    ${count}
+  </div>
+`;
+
+        return L.divIcon({
+            html: iconHtml,
+            className: "custom-cluster-icon",
+            iconSize: L.point(40, 40, true), // ustawienie rozmiaru ikony
+        });
+    };
+
     return (
         <MapContainer center={mapCenter} zoom={13}>
             <TileLayer
                 url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                 attribution='&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
             />
-            <MarkerClusterGroup chunkedLoading singleMarkerMode>
+            <MarkerClusterGroup
+                chunkedLoading
+                singleMarkerMode
+                showCoverageOnHover={false}
+                iconCreateFunction={createClusterCustomIcon}
+            >
                 {markers.map((marker, index) => (
                     <Marker key={index} position={[marker.lat, marker.lng]}>
                         <Popup>{marker.name}</Popup>
