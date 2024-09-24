@@ -318,6 +318,206 @@ const MapComponent = ({ position, userPosition }) => {
             link: "https://lodztheatrenight.com",
             photo: "https://example.com/lodz-theatre-night.jpg",
         },
+        {
+            lat: 51.1077,
+            lng: 13.0384,
+            name: "Dresden Art Expo",
+            type: "art",
+            description:
+                "Explore contemporary and classical art from renowned European artists.",
+            link: "https://dresdenartexpo.com",
+            photo: "https://example.com/dresden-art-expo.jpg",
+        },
+        {
+            lat: 55.6761,
+            lng: 12.5683,
+            name: "Copenhagen Jazz Festival",
+            type: "music",
+            description:
+                "An internationally acclaimed jazz festival featuring world-class performers.",
+            link: "https://copenhagenjazzfestival.com",
+            photo: "https://example.com/copenhagen-jazz-festival.jpg",
+        },
+        {
+            lat: 48.2082,
+            lng: 16.3738,
+            name: "Vienna International Film Festival",
+            type: "festival",
+            description:
+                "Showcasing the best films from around the world in Vienna's historic venues.",
+            link: "https://viennafilmfestival.com",
+            photo: "https://example.com/vienna-film-festival.jpg",
+        },
+        {
+            lat: 50.9375,
+            lng: 6.9603,
+            name: "Cologne Carnival",
+            type: "festival",
+            description:
+                "Join the colorful and vibrant street carnival in Cologne with parades and events.",
+            link: "https://colognecarnival.com",
+            photo: "https://example.com/cologne-carnival.jpg",
+        },
+        {
+            lat: 59.9139,
+            lng: 10.7522,
+            name: "Oslo Science Fair",
+            type: "conference",
+            description:
+                "A science fair bringing together the brightest minds from around Scandinavia.",
+            link: "https://oslosciencefair.com",
+            photo: "https://example.com/oslo-science-fair.jpg",
+        },
+        {
+            lat: 41.9028,
+            lng: 12.4964,
+            name: "Rome Music Fest",
+            type: "music",
+            description:
+                "Experience the soul of Italy through live music in the streets of Rome.",
+            link: "https://romemusicfest.com",
+            photo: "https://example.com/rome-music-fest.jpg",
+        },
+        {
+            lat: 52.3702,
+            lng: 4.8952,
+            name: "Amsterdam Art Walk",
+            type: "art",
+            description:
+                "A city-wide art exhibition featuring galleries and street art in Amsterdam.",
+            link: "https://amsterdamartwalk.com",
+            photo: "https://example.com/amsterdam-art-walk.jpg",
+        },
+        {
+            lat: 60.1695,
+            lng: 24.9354,
+            name: "Helsinki Theatre Festival",
+            type: "theatre",
+            description:
+                "A week of avant-garde and classic theatre performances in Finland’s capital.",
+            link: "https://helsinkitheatrefestival.com",
+            photo: "https://example.com/helsinki-theatre-festival.jpg",
+        },
+        {
+            lat: 38.7223,
+            lng: -9.1393,
+            name: "Lisbon Music in the Park",
+            type: "music",
+            description:
+                "Enjoy live music in Lisbon’s lush parks with local and international bands.",
+            link: "https://lisbonmusicinthepark.com",
+            photo: "https://example.com/lisbon-music-in-the-park.jpg",
+        },
+        {
+            lat: 37.9838,
+            lng: 23.7275,
+            name: "Athens History Conference",
+            type: "conference",
+            description:
+                "A conference discussing historical events and archaeology in Athens.",
+            link: "https://athenshistoryconference.com",
+            photo: "https://example.com/athens-history-conference.jpg",
+        },
+        {
+            lat: 40.4168,
+            lng: -3.7038,
+            name: "Madrid Open-Air Theatre",
+            type: "theatre",
+            description:
+                "Catch live open-air theatre performances across Madrid's iconic plazas.",
+            link: "https://madridopenairtheatre.com",
+            photo: "https://example.com/madrid-open-air-theatre.jpg",
+        },
+        {
+            lat: 53.3498,
+            lng: -6.2603,
+            name: "Dublin Writers' Festival",
+            type: "festival",
+            description:
+                "A celebration of literary works by writers from around the globe in Dublin.",
+            link: "https://dublinwritersfestival.com",
+            photo: "https://example.com/dublin-writers-festival.jpg",
+        },
+        {
+            lat: 47.4979,
+            lng: 19.0402,
+            name: "Budapest Science Symposium",
+            type: "conference",
+            description:
+                "Join a discussion on the latest developments in technology and science in Budapest.",
+            link: "https://budapestsciencesymposium.com",
+            photo: "https://example.com/budapest-science-symposium.jpg",
+        },
+        {
+            lat: 50.0755,
+            lng: 14.4378,
+            name: "Prague International Art Fair",
+            type: "art",
+            description:
+                "An exhibition of international art in the historical city of Prague.",
+            link: "https://pragueartfair.com",
+            photo: "https://example.com/prague-international-art-fair.jpg",
+        },
+        {
+            lat: 50.1109,
+            lng: 8.6821,
+            name: "Frankfurt Music Showcase",
+            type: "music",
+            description:
+                "Discover up-and-coming music artists in Frankfurt’s vibrant music scene.",
+            link: "https://frankfurtmusicshowcase.com",
+            photo: "https://example.com/frankfurt-music-showcase.jpg",
+        },
+        {
+            lat: 59.437,
+            lng: 24.7536,
+            name: "Tallinn Design Week",
+            type: "festival",
+            description:
+                "Celebrating creativity in design with exhibitions and workshops in Tallinn.",
+            link: "https://tallinndesignweek.com",
+            photo: "https://example.com/tallinn-design-week.jpg",
+        },
+        {
+            lat: 45.4642,
+            lng: 9.19,
+            name: "Milan Fashion Conference",
+            type: "conference",
+            description:
+                "A gathering of the fashion industry’s top minds to discuss trends and innovations.",
+            link: "https://milanfashionconference.com",
+            photo: "https://example.com/milan-fashion-conference.jpg",
+        },
+        {
+            lat: 50.8467,
+            lng: 4.3499,
+            name: "Brussels Theatre Nights",
+            type: "theatre",
+            description:
+                "An event showcasing a variety of theatrical performances from across Europe.",
+            link: "https://brusselstheatrenights.com",
+            photo: "https://example.com/brussels-theatre-nights.jpg",
+        },
+        {
+            lat: 48.8566,
+            lng: 2.3522,
+            name: "Paris Arts and Culture Fest",
+            type: "festival",
+            description:
+                "A festival celebrating French and global art, culture, and performances.",
+            link: "https://parisartsfest.com",
+            photo: "https://example.com/paris-arts-fest.jpg",
+        },
+        {
+            lat: 41.3851,
+            lng: 2.1734,
+            name: "Barcelona Film Showcase",
+            type: "festival",
+            description:
+                "Enjoy an exclusive showcase of Spanish and international films in Barcelona.",
+            link: "https://barcelonafilmshowcase.com",
+            photo: "https://example.com/barcelona-film-showcase.jpg",
+        },
     ];
 
     const userIcon = new Icon({
@@ -349,7 +549,7 @@ const MapComponent = ({ position, userPosition }) => {
         );
     }
 
-    const lastSearch = position;
+    const lastSearch = useRef(position);
 
     function HandeSearch() {
         const map = useMap();
@@ -359,7 +559,7 @@ const MapComponent = ({ position, userPosition }) => {
         } else {
             console.log("Initial search");
             mapCenter = position;
-            map.setView(mapCenter, map.getZoom());
+            map.setView(mapCenter, 14);
             lastSearch.current = position;
         }
     }
@@ -371,7 +571,7 @@ const MapComponent = ({ position, userPosition }) => {
                 zoom = map.getZoom();
                 console.log("Zoom level: ", zoom);
             },
-            move: () => {
+            drag: () => {
                 mapCenter = map.getCenter();
                 console.log("Center changed to: ", mapCenter);
             },

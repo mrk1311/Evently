@@ -13,6 +13,7 @@ const SearchComponent = ({ onSearch }) => {
             .then((data) => {
                 setSearchResults(data);
             });
+        console.log("search succesfull");
     };
 
     const handleResultClick = (lat, lon) => {
