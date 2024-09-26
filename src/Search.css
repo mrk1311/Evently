@@ -1,7 +1,17 @@
+#search-icon {
+    position: relative;
+    margin-left: auto;
+    margin-right: auto;
+    width: 50px;
+    height: 50px;
+    background-color: rgb(3, 49, 89);
+    z-index: -1;
+}
+
 #search-container {
     display: flex;
     flex-direction: column;
-    width: 40vw;
+    width: 100vw;
     flex-grow: 0;
 }
 

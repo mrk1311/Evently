@@ -12,6 +12,8 @@ import {
 } from "react-leaflet";
 import MarkerClusterGroup from "react-leaflet-cluster";
 import "./Map.css";
+import "leaflet-easybutton/src/easy-button.css"; // Import EasyButton CSS
+import "leaflet-easybutton"; // Import EasyButton JavaScript
 
 let mapCenter = [51.505, -0.09]; // London, UK
 
@@ -714,6 +716,26 @@ const MapComponent = ({ position, userPosition }) => {
         );
     };
 
+    const isSearchButtonRendered = useRef(false);
+
+    const SearchButton = () => {
+        const map = useMap();
+
+        if (isSearchButtonRendered.current === false) {
+            useEffect(() => {
+                L.easyButton(
+                    '<span class="search-icon">&telrec;</span>',
+                    function () {
+                        const searchContainer =
+                            document.getElementById("search");
+                        searchContainer.classList.add("hidden");
+                    }
+                ).addTo(map);
+                isSearchButtonRendered.current = true;
+            }, []);
+        }
+    };
+
     return (
         <MapContainer center={mapCenter} zoom={13}>
             <TileLayer
@@ -742,6 +764,7 @@ const MapComponent = ({ position, userPosition }) => {
             <LocationMarker />
             <LocateUser />
             <CenterMap />
+            <SearchButton />
         </MapContainer>
     );
 };
