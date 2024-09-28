@@ -53,7 +53,7 @@ const App = () => {
     return (
         <div id="container">
             {/* SearchComponent allows the user to search for a location */}
-            {/* <SearchComponent id="search" onSearch={handleSearch} /> */}
+            <SearchComponent id="search" onSearch={handleSearch} />
 
             {/* MapComponent displays the map centered on the user's position */}
             <MapComponent

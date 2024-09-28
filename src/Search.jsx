@@ -17,25 +17,54 @@ const SearchComponent = ({ onSearch }) => {
         console.log("search successful");
     };
 
+    const hideMap = () => {
+        document.getElementById("map").style.display = "none";
+    };
+
+    const SearchBar = ({ onSearch }) => {
+        const [searchQuery, setSearchQuery] = useState("");
+        // const [searchResults, setSearchResults] = useState([]);
+
+        const handleSearch = () => {
+            const url = `https://nominatim.openstreetmap.org/search?format=json&q=${searchQuery}`;
+
+            fetch(url)
+                .then((res) => res.json())
+                .then((data) => {
+                    setSearchResults(data); // Save search results to the state
+                    if (data.length > 0) {
+                        const { lat, lon } = data[0]; // Use the first result
+                        onSearch(lat, lon); // Center the map on the first result
+                    }
+                })
+                .catch((err) =>
+                    console.error("Error fetching search results:", err)
+                );
+        };
+
+        return (
+            <div className="search-bar">
+                <input
+                    type="text"
+                    placeholder="Search location or events..."
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                    onClick={hideMap}
+                />
+                <button onClick={handleSearch}>Search</button>
+            </div>
+        );
+    };
+
     const handleResultClick = (lat, lon) => {
         onSearch(lat, lon);
         setIsSearchOpen(false); // Close the search after selecting a result
     };
 
-    const handleOpenSearch = () => {
-        setIsSearchOpen(true); // Open full-screen search container
-    };
-
-    const handleCloseSearch = () => {
-        setIsSearchOpen(false); // Close full-screen search container
-    };
-
     return (
         <>
             {/* Search icon button on the map */}
-            <button id="search-icon" onClick={handleOpenSearch}>
-                🔍
-            </button>
+            <SearchBar />
 
             {/* Full-screen search container */}
             {isSearchOpen && (

@@ -764,7 +764,7 @@ const MapComponent = ({ position, userPosition }) => {
             <LocationMarker />
             <LocateUser />
             <CenterMap />
-            <SearchButton />
+            {/* <SearchButton /> */}
         </MapContainer>
     );
 };
