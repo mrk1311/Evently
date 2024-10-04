@@ -1,22 +1,8 @@
-/* #search-icon {
-    position: relative;
-    margin-left: auto;
-    margin-right: auto;
-    width: 50px;
-    height: 50px;
-    background-color: rgb(3, 49, 89);
-    z-index: 1000;
-} */
-
 #search-container {
     display: flex;
     flex-direction: column;
     width: 100vw;
     flex-grow: 0;
-}
-
-#search-result {
-    cursor: pointer;
 }
 
 li:hover {
@@ -40,7 +26,38 @@ li:active {
     gap: 10px;
 }
 
+#close-search {
+    background-color: red;
+}
+
+.search-results {
+    /* position: absolute; */
+    /* top: 50px; */
+    /* left: calc(50% - 182px); */
+    width: 100vw;
+    height: 100vh;
+    z-index: 999; /* Ensure it's on top of the map */
+    background-color: white;
+    color: black;
+    /* padding: 10px; */
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.search-result {
+    cursor: pointer;
+    padding: 10px;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+    display: flex;
+    gap: 10px;
+}
+
 .search-bar input {
+    color: black;
     padding: 5px;
     border: 1px solid #ccc;
     background-color: white;

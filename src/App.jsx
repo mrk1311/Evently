@@ -4,6 +4,8 @@ import SearchComponent from "./Search.jsx";
 import "./App.css";
 
 const App = () => {
+    const [isMapOpen, setIsMapOpen] = useState(true);
+
     const [position, setPosition] = useState({
         lat: 0,
         lng: 0,
@@ -53,14 +55,21 @@ const App = () => {
     return (
         <div id="container">
             {/* SearchComponent allows the user to search for a location */}
-            <SearchComponent id="search" onSearch={handleSearch} />
+            <SearchComponent
+                id="search"
+                onSearch={handleSearch}
+                onOpen={() => setIsMapOpen(false)}
+                onClose={() => setIsMapOpen(true)}
+            />
 
             {/* MapComponent displays the map centered on the user's position */}
-            <MapComponent
-                id="map"
-                position={position}
-                userPosition={userPosition}
-            />
+            {isMapOpen && (
+                <MapComponent
+                    id="map"
+                    position={position}
+                    userPosition={userPosition}
+                />
+            )}
         </div>
     );
 };

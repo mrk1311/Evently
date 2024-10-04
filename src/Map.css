@@ -21,3 +21,9 @@
 .hidden {
     display: none;
 }
+
+.leaflet-bar.disabled,
+.leaflet-bar button.disabled {
+    opacity: 0;
+    border: none;
+}
