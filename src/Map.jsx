@@ -168,6 +168,7 @@ function LocationMarker({ userPosition }) {
         if (userPosition === null) {
             return null;
         } else {
+            // Center the map on the user's position only on the initial render
             if (initialRender) {
                 map.setView(userPosition, 14);
                 initialRender = false;
@@ -197,6 +198,7 @@ function MapComponent({ position, userPosition }) {
     const displayMap = useMemo(() => {
         return (
             <MapContainer
+                zoomSnap={0}
                 center={center}
                 zoom={zoom}
                 zoomControl={false}

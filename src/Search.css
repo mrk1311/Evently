@@ -1,5 +1,12 @@
 #search-container {
+    position: absolute;
+    top: 10px;
+    left: 0;
+    right: 0;
+    z-index: 1000;
     display: flex;
+    justify-content: center;
+    align-items: center;
     flex-direction: column;
     width: 100vw;
     flex-grow: 0;
@@ -14,16 +21,19 @@ li:active {
 }
 
 .search-bar {
-    position: absolute;
+    /* position: absolute;
     top: 10px;
-    left: calc(50% - 182px);
+    left: calc(50% - 182px); */
     z-index: 1000; /* Ensure it's on top of the map */
     background-color: white;
     padding: 10px;
     border-radius: 8px;
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
     display: flex;
+    justify-content: center;
     gap: 10px;
+    width: 100vw;
+    max-width: 400px;
 }
 
 #close-search {
@@ -56,13 +66,28 @@ li:active {
     gap: 10px;
 }
 
-.search-bar input {
+/* .search-bar input {
     color: black;
     padding: 5px;
     border: 1px solid #ccc;
     background-color: white;
     border-radius: 4px;
-    width: 250px;
+    width: 100%;
+} */
+
+#search-input {
+    width: 100%;
+    padding: 5px;
+    margin: auto;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    background-color: white;
+    color: black;
+}
+
+#search-form {
+    width: 100%;
+    display: flex;
 }
 
 .search-bar button {

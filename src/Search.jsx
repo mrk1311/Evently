@@ -1,11 +1,12 @@
-import React, { useState } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import "./Search.css";
 
 const SearchComponent = ({ onSearch, onOpen, onClose }) => {
     const [searchResults, setSearchResults] = useState([]);
     const [isSearchOpen, setIsSearchOpen] = useState(false); // Track search container visibility
 
-    const handleSearch = () => {
+    const handleSearch = (e) => {
+        e.preventDefault();
         const query = document.getElementById("search-input").value;
         const url = `https://nominatim.openstreetmap.org/search?format=json&q=${query}`;
 
@@ -25,53 +26,53 @@ const SearchComponent = ({ onSearch, onOpen, onClose }) => {
         setIsSearchOpen(false);
     };
 
-    const SearchBar = ({ onSearch }) => {
+    const CloseButton = () => {
+        return (
+            <button
+                id="close-search"
+                onClick={() => {
+                    handleCloseSearch();
+                    onClose();
+                }}
+            >
+                ✖
+            </button>
+        );
+    };
+
+    const SearchBar = () => {
         const [searchQuery, setSearchQuery] = useState("");
-        // const [searchResults, setSearchResults] = useState([]);
+        const inputRef = useRef(null);
 
-        // const handleSearch = () => {
-        //     const url = `https://nominatim.openstreetmap.org/search?format=json&q=${searchQuery}`;
-
-        //     fetch(url)
-        //         .then((res) => res.json())
-        //         .then((data) => {
-        //             setSearchResults(data); // Save search results to the state
-        //             if (data.length > 0) {
-        //                 const { lat, lon } = data[0]; // Use the first result
-        //                 onSearch(lat, lon); // Center the map on the first result
-        //             }
-        //         })
-        //         .catch((err) =>
-        //             console.error("Error fetching search results:", err)
-        //         );
-        // };
+        // Ensure input stays focused when search is open
+        useEffect(() => {
+            if (isSearchOpen && inputRef.current) {
+                inputRef.current.focus();
+            }
+        }, [isSearchOpen]);
 
         return (
             <>
                 <div className="search-bar">
-                    {isSearchOpen && (
-                        <button
-                            id="close-search"
+                    {isSearchOpen && <CloseButton />}{" "}
+                    {/* Conditionally render CloseButton */}
+                    <form id="search-form" onSubmit={handleSearch}>
+                        <input
+                            ref={inputRef}
+                            id="search-input"
+                            type="text"
+                            placeholder="Search for location or events..."
+                            value={searchQuery}
+                            onChange={(e) => setSearchQuery(e.target.value)}
                             onClick={() => {
-                                handleCloseSearch();
-                                onClose();
+                                openSearch(); // Opens the search (if it has logic in parent component)
+                                onOpen(); // Triggers any additional logic passed as onOpen prop
                             }}
-                        >
-                            ✖
-                        </button>
-                    )}
-                    <input
-                        id="search-input"
-                        type="text"
-                        placeholder="Search for location or events..."
-                        value={searchQuery}
-                        onChange={(e) => setSearchQuery(e.target.value)}
-                        onClick={() => {
-                            openSearch();
-                            onOpen();
-                        }}
-                    />
-                    <button onClick={handleSearch}>Search</button>
+                        />
+                    </form>
+                    <button type="submit" form="search-form">
+                        Search
+                    </button>
                 </div>
             </>
         );
