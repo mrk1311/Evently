@@ -13,8 +13,8 @@ const SearchComponent = ({ onSearch, onOpen, onClose }) => {
             .then((res) => res.json())
             .then((data) => {
                 setSearchResults(data);
+                console.log(searchResults);
             });
-        console.log(searchResults);
     };
 
     const openSearch = () => {
@@ -50,7 +50,13 @@ const SearchComponent = ({ onSearch, onOpen, onClose }) => {
             <>
                 <div className="search-bar">
                     {isSearchOpen && (
-                        <button id="close-search" onClick={handleCloseSearch}>
+                        <button
+                            id="close-search"
+                            onClick={() => {
+                                handleCloseSearch();
+                                onClose();
+                            }}
+                        >
                             ✖
                         </button>
                     )}
@@ -98,6 +104,7 @@ const SearchComponent = ({ onSearch, onOpen, onClose }) => {
     const handleResultClick = (lat, lon) => {
         onSearch(lat, lon);
         setIsSearchOpen(false); // Close the search after selecting a result
+        onClose();
     };
 
     return (

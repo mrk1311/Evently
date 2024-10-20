@@ -6,11 +6,7 @@ import "./App.css";
 const App = () => {
     const [isMapOpen, setIsMapOpen] = useState(true);
 
-    const [position, setPosition] = useState({
-        lat: 0,
-        lng: 0,
-        accuracy: 0,
-    });
+    const [position, setPosition] = useState(null);
 
     const [userPosition, setUserPosition] = useState(null);
 
@@ -63,13 +59,13 @@ const App = () => {
             />
 
             {/* MapComponent displays the map centered on the user's position */}
-            {isMapOpen && (
-                <MapComponent
-                    id="map"
-                    position={position}
-                    userPosition={userPosition}
-                />
-            )}
+            {/* {isMapOpen && ( */}
+            <MapComponent
+                className={isMapOpen ? "map-open" : "map-closed"}
+                position={position}
+                userPosition={userPosition}
+            />
+            {/* )} */}
         </div>
     );
 };
