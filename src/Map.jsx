@@ -198,7 +198,6 @@ function MapComponent({ position, userPosition }) {
     const displayMap = useMemo(() => {
         return (
             <MapContainer
-                zoomSnap={0}
                 center={center}
                 zoom={zoom}
                 zoomControl={false}

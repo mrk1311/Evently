@@ -54,25 +54,32 @@ const SearchComponent = ({ onSearch, onOpen, onClose }) => {
         return (
             <>
                 <div className="search-bar">
-                    {isSearchOpen && <CloseButton />}{" "}
-                    {/* Conditionally render CloseButton */}
-                    <form id="search-form" onSubmit={handleSearch}>
-                        <input
-                            ref={inputRef}
-                            id="search-input"
-                            type="text"
-                            placeholder="Search for location or events..."
-                            value={searchQuery}
-                            onChange={(e) => setSearchQuery(e.target.value)}
-                            onClick={() => {
-                                openSearch(); // Opens the search (if it has logic in parent component)
-                                onOpen(); // Triggers any additional logic passed as onOpen prop
-                            }}
-                        />
-                    </form>
-                    <button type="submit" form="search-form">
-                        Search
-                    </button>
+                    <div className="search-container">
+                        {/* Conditionally render CloseButton */}
+                        {isSearchOpen && <CloseButton />}{" "}
+                        <form id="search-form" onSubmit={handleSearch}>
+                            <input
+                                ref={inputRef}
+                                id="search-input"
+                                type="text"
+                                placeholder="Search for location or events..."
+                                value={searchQuery}
+                                onChange={(e) => setSearchQuery(e.target.value)}
+                                onClick={() => {
+                                    openSearch(); // Opens the search (if it has logic in parent component)
+                                    onOpen(); // Triggers any additional logic passed as onOpen prop
+                                }}
+                            />
+                        </form>
+                        <button type="submit" form="search-form">
+                            Search
+                        </button>
+                    </div>
+                    <div id="search-filters">
+                        <button>Type</button>
+                        <button>Place</button>
+                        <button>Time</button>
+                    </div>
                 </div>
             </>
         );
