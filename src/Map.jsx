@@ -14,7 +14,7 @@ import MarkerClusterGroup from "react-leaflet-cluster";
 import "./Map.css";
 import "leaflet-easybutton/src/easy-button.css"; // Import EasyButton CSS
 import "leaflet-easybutton"; // Import EasyButton JavaScript
-import events from "./events.json";
+// import events from "./events.json";
 
 var center = [51.505, -0.09]; // London, UK
 var zoom = 14;
@@ -192,7 +192,7 @@ function HandleSearch({ position }) {
     }, [position]);
 }
 
-function MapComponent({ position, userPosition }) {
+function MapComponent({ position, userPosition, events }) {
     const [map, setMap] = useState(null);
 
     const displayMap = useMemo(() => {
@@ -229,7 +229,7 @@ function MapComponent({ position, userPosition }) {
                 <LocationMarker userPosition={userPosition} />
             </MapContainer>
         );
-    }, [position, userPosition]);
+    }, [position, userPosition, events]);
 
     return <div>{displayMap}</div>;
 }

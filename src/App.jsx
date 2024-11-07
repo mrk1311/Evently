@@ -2,13 +2,13 @@ import React, { useState, useEffect } from "react";
 import MapComponent from "./Map.jsx";
 import SearchComponent from "./Search.jsx";
 import "./App.css";
+import events from "./events.json";
 
 const App = () => {
     const [isMapOpen, setIsMapOpen] = useState(true);
-
     const [position, setPosition] = useState(null);
-
     const [userPosition, setUserPosition] = useState(null);
+    const [filteredEvents, setFilteredEvents] = useState(events);
 
     useEffect(() => {
         const options = {
@@ -56,16 +56,16 @@ const App = () => {
                 onSearch={handleSearch}
                 onOpen={() => setIsMapOpen(false)}
                 onClose={() => setIsMapOpen(true)}
+                setFilteredEvents={setFilteredEvents}
             />
 
             {/* MapComponent displays the map centered on the user's position */}
-            {/* {isMapOpen && ( */}
             <MapComponent
                 className={isMapOpen ? "map-open" : "map-closed"}
                 position={position}
                 userPosition={userPosition}
+                events={filteredEvents}
             />
-            {/* )} */}
         </div>
     );
 };

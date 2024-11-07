@@ -1,13 +1,14 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useRef, useEffect, useMemo } from "react";
 import "./Search.css";
+import events from "./events.json";
 
-const SearchComponent = ({ onSearch, onOpen, onClose }) => {
+const SearchComponent = ({ onSearch, onOpen, onClose, setFilteredEvents }) => {
     const [searchResults, setSearchResults] = useState([]);
     const [isSearchOpen, setIsSearchOpen] = useState(false); // Track search container visibility
+    const [pickedFilter, setPickedFilter] = useState(null);
 
-    const handleSearch = (e) => {
-        e.preventDefault();
-        const query = document.getElementById("search-input").value;
+    const handlePlaceSearch = () => {
+        const query = document.getElementById("location-search").value;
         const url = `https://nominatim.openstreetmap.org/search?format=json&q=${query}`;
 
         fetch(url)
@@ -16,6 +17,17 @@ const SearchComponent = ({ onSearch, onOpen, onClose }) => {
                 setSearchResults(data);
                 console.log(searchResults);
             });
+    };
+
+    const handleSearch = (e) => {
+        e.preventDefault();
+        if (pickedFilter === "Type") {
+            handleTypeSearch(e);
+        } else if (pickedFilter === "Place") {
+            handlePlaceSearch(e);
+        } else if (pickedFilter === "Time") {
+            handleTimeSearch(e);
+        }
     };
 
     const openSearch = () => {
@@ -33,6 +45,10 @@ const SearchComponent = ({ onSearch, onOpen, onClose }) => {
                 onClick={() => {
                     handleCloseSearch();
                     onClose();
+
+                    // Reset picked filter when closing search
+                    // TODO if you want to keep the filter selected, remove this line
+                    setPickedFilter(null);
                 }}
             >
                 ✖
@@ -40,7 +56,55 @@ const SearchComponent = ({ onSearch, onOpen, onClose }) => {
         );
     };
 
-    const SearchBar = () => {
+    const Filters = () => {
+        const handleClick = (type) => {
+            console.log("filter clicked: ", type);
+            setPickedFilter(type);
+
+            // Show filter options based on type
+            // if (type === "Type") {
+            setSearchResults([]);
+            // }
+
+            // if (type === "Place") {
+            // setSearchResults([]);
+            // }
+
+            // if (type === "Time") {
+            // setSearchResults([]);
+            // }
+        };
+
+        const FilterButton = ({ type, picked }) => {
+            return (
+                <button
+                    onClick={() => {
+                        handleClick(type);
+                        openSearch();
+                        onOpen();
+                    }}
+                    className={
+                        picked ? "search-filter picked" : "search-filter"
+                    }
+                >
+                    {type}
+                </button>
+            );
+        };
+
+        return (
+            <div id="search-filters">
+                <FilterButton type={"Type"} picked={pickedFilter === "Type"} />
+                <FilterButton
+                    type={"Place"}
+                    picked={pickedFilter === "Place"}
+                />
+                <FilterButton type={"Time"} picked={pickedFilter === "Time"} />
+            </div>
+        );
+    };
+
+    const SearchContainer = () => {
         const [searchQuery, setSearchQuery] = useState("");
         const inputRef = useRef(null);
 
@@ -51,62 +115,194 @@ const SearchComponent = ({ onSearch, onOpen, onClose }) => {
             }
         }, [isSearchOpen]);
 
+        if (pickedFilter === "Type") {
+            return (
+                <>
+                    {isSearchOpen && (
+                        <div className="search-container">
+                            {/* Conditionally render CloseButton */}
+                            {isSearchOpen && <CloseButton />}
+                            <form id="search-form" onSubmit={handleSearch}>
+                                <input
+                                    ref={inputRef}
+                                    className="search-input"
+                                    type="text"
+                                    placeholder="Search for type of event"
+                                    value={searchQuery}
+                                    onChange={(e) =>
+                                        setSearchQuery(e.target.value)
+                                    }
+                                    // onClick={() => {
+                                    //     openSearch(); // Opens the search (if it has logic in parent component)
+                                    //     onOpen(); // Triggers any additional logic passed as onOpen prop
+                                    // }}
+                                />
+                            </form>
+                            <button type="submit" form="search-form">
+                                Search
+                            </button>
+                        </div>
+                    )}
+                </>
+            );
+        } else if (pickedFilter === "Place") {
+            return (
+                <>
+                    {isSearchOpen && (
+                        <div className="search-container">
+                            {/* Conditionally render CloseButton */}
+                            {isSearchOpen && <CloseButton />}
+                            <form id="search-form" onSubmit={handleSearch}>
+                                <input
+                                    ref={inputRef}
+                                    className="search-input"
+                                    id="location-search"
+                                    type="text"
+                                    placeholder="Search for location"
+                                    value={searchQuery}
+                                    onChange={(e) =>
+                                        setSearchQuery(e.target.value)
+                                    }
+                                    // onClick={() => {
+                                    //     openSearch(); // Opens the search (if it has logic in parent component)
+                                    //     onOpen(); // Triggers any additional logic passed as onOpen prop
+                                    // }}
+                                />
+                            </form>
+                            <button type="submit" form="search-form">
+                                Search
+                            </button>
+                        </div>
+                    )}
+                </>
+            );
+        } else if (pickedFilter === "Time") {
+            return (
+                <>
+                    {isSearchOpen && (
+                        <div className="search-container">
+                            {/* Conditionally render CloseButton */}
+                            {isSearchOpen && <CloseButton />}
+                            <form id="search-form" onSubmit={handleSearch}>
+                                <label for="start-date">from:</label>
+                                <input
+                                    ref={inputRef}
+                                    id="start-date"
+                                    className="search-input"
+                                    type="date"
+                                    value={searchQuery}
+                                    onChange={(e) =>
+                                        setSearchQuery(e.target.value)
+                                    }
+                                />
+                                <label for="end-date">to:</label>
+                                <input
+                                    ref={inputRef}
+                                    id="end-date"
+                                    className="search-input"
+                                    type="date"
+                                    placeholder="Search for location"
+                                    value={searchQuery}
+                                    onChange={(e) =>
+                                        setSearchQuery(e.target.value)
+                                    }
+                                />
+                            </form>
+                            <button type="submit" form="search-form">
+                                Search
+                            </button>
+                        </div>
+                    )}
+                </>
+            );
+        }
+    };
+
+    const SearchBar = () => {
         return (
             <>
                 <div className="search-bar">
-                    <div className="search-container">
-                        {/* Conditionally render CloseButton */}
-                        {isSearchOpen && <CloseButton />}{" "}
-                        <form id="search-form" onSubmit={handleSearch}>
-                            <input
-                                ref={inputRef}
-                                id="search-input"
-                                type="text"
-                                placeholder="Search for location or events..."
-                                value={searchQuery}
-                                onChange={(e) => setSearchQuery(e.target.value)}
-                                onClick={() => {
-                                    openSearch(); // Opens the search (if it has logic in parent component)
-                                    onOpen(); // Triggers any additional logic passed as onOpen prop
-                                }}
-                            />
-                        </form>
-                        <button type="submit" form="search-form">
-                            Search
-                        </button>
-                    </div>
-                    <div id="search-filters">
-                        <button>Type</button>
-                        <button>Place</button>
-                        <button>Time</button>
-                    </div>
+                    <SearchContainer />
+                    <Filters />
                 </div>
             </>
         );
     };
 
+    const handleTypeClick = (type) => {
+        console.log("Type clicked: ", type);
+        setFilteredEvents(events.filter((event) => event.type === type));
+        onClose();
+    };
+
     const ResultsComponent = ({ searchResults, onSearch }) => {
-        return (
-            <>
-                {isSearchOpen && (
-                    <>
-                        <div id="search-results">
-                            {searchResults.map((result) => (
-                                <div
-                                    className="search-result"
-                                    key={result.place_id}
-                                    onClick={() =>
-                                        onSearch(result.lat, result.lon)
-                                    }
-                                >
-                                    {result.display_name}
-                                </div>
-                            ))}
-                        </div>
-                    </>
-                )}
-            </>
-        );
+        const uniqueTypes = [...new Set(events.map((event) => event.type))];
+
+        if (pickedFilter === "Type") {
+            return (
+                <>
+                    {isSearchOpen && (
+                        <>
+                            <div id="search-results">
+                                {uniqueTypes.map((type, index) => (
+                                    <div
+                                        className="search-result"
+                                        key={index}
+                                        onClick={() => handleTypeClick(type)}
+                                    >
+                                        {type}
+                                    </div>
+                                ))}
+                            </div>
+                        </>
+                    )}
+                </>
+            );
+        } else if (pickedFilter === "Place") {
+            return (
+                <>
+                    {isSearchOpen && (
+                        <>
+                            <div id="search-results">
+                                {searchResults.map((result) => (
+                                    <div
+                                        className="search-result"
+                                        key={result.place_id}
+                                        onClick={() =>
+                                            onSearch(result.lat, result.lon)
+                                        }
+                                    >
+                                        {result.display_name}
+                                    </div>
+                                ))}
+                            </div>
+                        </>
+                    )}
+                </>
+            );
+        } else if (pickedFilter === "Time") {
+            return (
+                <>
+                    {isSearchOpen && (
+                        <>
+                            <div id="search-results">
+                                {searchResults.map((result) => (
+                                    <div
+                                        className="search-result"
+                                        key={result.place_id}
+                                        onClick={() =>
+                                            onSearch(result.lat, result.lon)
+                                        }
+                                    >
+                                        {result.display_name}
+                                    </div>
+                                ))}
+                            </div>
+                        </>
+                    )}
+                </>
+            );
+        }
     };
 
     const handleResultClick = (lat, lon) => {
@@ -118,43 +314,11 @@ const SearchComponent = ({ onSearch, onOpen, onClose }) => {
     return (
         <>
             <div id="search-container">
-                {/* Search icon button on the map */}
                 <SearchBar />
                 <ResultsComponent
                     searchResults={searchResults}
                     onSearch={handleResultClick}
                 />
-                {/* Full-screen search container */}
-                {/* {isSearchOpen && (
-                    <div id="search-container">
-                        <div id="search-header">
-                            <button id="close-search" onClick={handleCloseSearch}>
-                                ✖ Close
-                            </button>
-                        </div>
-                        <input
-                            type="text"
-                            id="search-input"
-                            placeholder="Search location"
-                        />
-                        <button id="search-button" onClick={handleSearch}>
-                            Search
-                        </button>
-                        <ul id="search-results">
-                            {searchResults.map((result) => (
-                                <li
-                                    id="search-result"
-                                    key={result.place_id}
-                                    onClick={() =>
-                                        handleResultClick(result.lat, result.lon)
-                                    }
-                                >
-                                    {result.display_name}
-                                </li>
-                            ))}
-                        </ul>
-                    </div>
-                )} */}
             </div>
         </>
     );
