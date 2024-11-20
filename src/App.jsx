@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import MapComponent from "./Map.jsx";
 import SearchComponent from "./Search.jsx";
+import BottomSwipeContainer from "./BottomSwipeContainer.jsx";
 import "./App.css";
 import events from "./events.json";
 
@@ -60,6 +61,12 @@ const App = () => {
                 onClose={() => setIsMapOpen(true)}
                 filteredEvents={filteredEvents}
                 setFilteredEvents={setFilteredEvents}
+            />
+
+            {/* BottomSwipeContainer displays the list of events */}
+            <BottomSwipeContainer
+                events={filteredEvents}
+                handleSearch={handleSearch}
             />
 
             {/* MapComponent displays the map centered on the user's position */}

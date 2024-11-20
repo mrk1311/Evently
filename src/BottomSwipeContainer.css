@@ -1,0 +1,60 @@
+/* BottomSwipeContainer.css */
+
+.container {
+    position: relative;
+    width: 100%;
+    height: 100vh;
+    background-color: transparent;
+}
+
+.swipeable-container {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    margin-inline: auto;
+    width: 100%;
+    background-color: #fff;
+    box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.2);
+    border-radius: 20px 20px 0 0;
+    transition: height 0.3s ease-in-out;
+    height: 80px; /* Initially collapsed height */
+    color: black;
+    z-index: 1001;
+    max-width: 400px;
+    padding: 10px;
+}
+
+.swipeable-container.open {
+    height: 70vh; /* Expanded height (adjust based on your preference) */
+}
+
+.header {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 60px;
+    cursor: pointer;
+    background-color: #f1f1f1;
+    border-radius: 20px 20px 0 0;
+}
+
+.events-list {
+    padding: 20px;
+    overflow-y: auto;
+    max-height: 60vh; /* Ensures scroll if the content exceeds the container */
+}
+
+.event {
+    margin-bottom: 15px;
+    cursor: pointer;
+}
+
+.event h4 {
+    font-size: 18px;
+    margin-bottom: 5px;
+}
+
+.event p {
+    margin: 5px 0;
+}
