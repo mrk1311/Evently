@@ -21,6 +21,7 @@
     height: 80px; /* Initially collapsed height */
     color: black;
     z-index: 1001;
+    width: 90vw;
     max-width: 400px;
     padding: 10px;
 }
