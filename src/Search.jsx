@@ -1,6 +1,7 @@
 import React, { useState, useRef, useEffect, useMemo } from "react";
 import "./Search.css";
 import events from "./events.json";
+import { parseISO, isValid, isWithinInterval } from "date-fns";
 
 const SearchComponent = ({
     onSearch,
@@ -15,6 +16,8 @@ const SearchComponent = ({
     const [pickedFilter, setPickedFilter] = useState(null);
     const uniqueTypes = [...new Set(events.map((event) => event.type))];
     const [selectedTypes, setSelectedTypes] = useState(uniqueTypes);
+    const [startDate, setStartDate] = useState(null);
+    const [endDate, setEndDate] = useState(null);
 
     const handlePlaceSearch = () => {
         const query = document.getElementById("location-search").value;
@@ -37,14 +40,30 @@ const SearchComponent = ({
         );
     };
 
+    const handleDateSearch = (e) => {
+        e.preventDefault();
+        handleCloseSearch();
+        onClose();
+
+        setFilteredEvents(
+            events.filter((event) => {
+                const eventDate = parseISO(event.date);
+                return isWithinInterval(eventDate, {
+                    start: parseISO(startDate),
+                    end: parseISO(endDate),
+                });
+            })
+        );
+    };
+
     const handleSearch = (e) => {
         e.preventDefault();
         if (pickedFilter === "Type") {
             handleTypeSearch(e);
         } else if (pickedFilter === "Place") {
             handlePlaceSearch(e);
-        } else if (pickedFilter === "Time") {
-            handleTimeSearch(e);
+        } else if (pickedFilter === "Date") {
+            handleDateSearch(e);
         }
     };
 
@@ -54,6 +73,8 @@ const SearchComponent = ({
 
     const handleCloseSearch = () => {
         setIsSearchOpen(false);
+        setPickedFilter(null);
+        setSearchQuery("");
     };
 
     const CloseButton = () => {
@@ -85,18 +106,8 @@ const SearchComponent = ({
             console.log("filter clicked: ", type);
             setPickedFilter(type);
 
-            // Show filter options based on type
-            // if (type === "Type") {
+            // TODO make location results not disappear when switching filters. Maybe create Type, Place, and Date components
             setSearchResults([]);
-            // }
-
-            // if (type === "Place") {
-            // setSearchResults([]);
-            // }
-
-            // if (type === "Time") {
-            // setSearchResults([]);
-            // }
         };
 
         const FilterButton = ({ type, picked }) => {
@@ -123,7 +134,7 @@ const SearchComponent = ({
                     type={"Place"}
                     picked={pickedFilter === "Place"}
                 />
-                <FilterButton type={"Time"} picked={pickedFilter === "Time"} />
+                <FilterButton type={"Date"} picked={pickedFilter === "Date"} />
             </div>
         );
     };
@@ -191,7 +202,7 @@ const SearchComponent = ({
                     )}
                 </>
             );
-        } else if (pickedFilter === "Time") {
+        } else if (pickedFilter === "Date") {
             return (
                 <>
                     {isSearchOpen && (
@@ -205,9 +216,9 @@ const SearchComponent = ({
                                     id="start-date"
                                     className="search-input"
                                     type="date"
-                                    value={searchQuery}
+                                    value={startDate}
                                     onChange={(e) =>
-                                        setSearchQuery(e.target.value)
+                                        setStartDate(e.target.value)
                                     }
                                 />
                                 <label for="end-date">to:</label>
@@ -216,11 +227,8 @@ const SearchComponent = ({
                                     id="end-date"
                                     className="search-input"
                                     type="date"
-                                    placeholder="Search for location"
-                                    value={searchQuery}
-                                    onChange={(e) =>
-                                        setSearchQuery(e.target.value)
-                                    }
+                                    value={endDate}
+                                    onChange={(e) => setEndDate(e.target.value)}
                                 />
                             </form>
                             <button type="submit" form="search-form">
@@ -257,13 +265,25 @@ const SearchComponent = ({
             }
         };
 
-        // const displaySelectedTypes = useMemo(() => {
         return (
             <>
                 {isSearchOpen && (
                     <>
                         <div id="search-results">
                             <h3>Select Event Types</h3>
+                            <div id="type-buttons">
+                                <button
+                                    onClick={() =>
+                                        setSelectedTypes(uniqueTypes)
+                                    }
+                                >
+                                    Select All
+                                </button>
+
+                                <button onClick={() => setSelectedTypes([])}>
+                                    Clear All
+                                </button>
+                            </div>
                             {filteredTypes.map((type, index) => (
                                 <div
                                     className={
@@ -282,10 +302,9 @@ const SearchComponent = ({
                 )}
             </>
         );
-        // }, [selectedTypes]);
-
-        // return <div id="search-results">{displaySelectedTypes}</div>;
     };
+
+    const DateComponent = () => {};
 
     const ResultsComponent = ({ searchResults, onSearch }) => {
         if (pickedFilter === "Type") {
@@ -300,9 +319,10 @@ const SearchComponent = ({
                                     <div
                                         className="search-result"
                                         key={result.place_id}
-                                        onClick={() =>
-                                            onSearch(result.lat, result.lon)
-                                        }
+                                        onClick={() => {
+                                            onSearch(result.lat, result.lon);
+                                            handleCloseSearch();
+                                        }}
                                     >
                                         {result.display_name}
                                     </div>
@@ -312,7 +332,7 @@ const SearchComponent = ({
                     )}
                 </>
             );
-        } else if (pickedFilter === "Time") {
+        } else if (pickedFilter === "Date") {
             return (
                 <>
                     {isSearchOpen && (
