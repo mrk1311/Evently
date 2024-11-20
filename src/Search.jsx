@@ -2,10 +2,19 @@ import React, { useState, useRef, useEffect, useMemo } from "react";
 import "./Search.css";
 import events from "./events.json";
 
-const SearchComponent = ({ onSearch, onOpen, onClose, setFilteredEvents }) => {
+const SearchComponent = ({
+    onSearch,
+    onOpen,
+    onClose,
+    filteredEvents,
+    setFilteredEvents,
+}) => {
+    const [searchQuery, setSearchQuery] = useState("");
     const [searchResults, setSearchResults] = useState([]);
     const [isSearchOpen, setIsSearchOpen] = useState(false); // Track search container visibility
     const [pickedFilter, setPickedFilter] = useState(null);
+    const uniqueTypes = [...new Set(events.map((event) => event.type))];
+    const [selectedTypes, setSelectedTypes] = useState(uniqueTypes);
 
     const handlePlaceSearch = () => {
         const query = document.getElementById("location-search").value;
@@ -17,6 +26,15 @@ const SearchComponent = ({ onSearch, onOpen, onClose, setFilteredEvents }) => {
                 setSearchResults(data);
                 console.log(searchResults);
             });
+    };
+
+    const handleTypeSearch = (e) => {
+        handleCloseSearch();
+        onClose();
+
+        setFilteredEvents(
+            events.filter((event) => selectedTypes.includes(event.type))
+        );
     };
 
     const handleSearch = (e) => {
@@ -45,10 +63,16 @@ const SearchComponent = ({ onSearch, onOpen, onClose, setFilteredEvents }) => {
                 onClick={() => {
                     handleCloseSearch();
                     onClose();
+                    setSearchQuery(""); // Clear search query when closing search
 
                     // Reset picked filter when closing search
                     // TODO if you want to keep the filter selected, remove this line
                     setPickedFilter(null);
+
+                    // Reset selected types when closing search
+                    setSelectedTypes([
+                        ...new Set(filteredEvents.map((event) => event.type)),
+                    ]);
                 }}
             >
                 ✖
@@ -105,7 +129,6 @@ const SearchComponent = ({ onSearch, onOpen, onClose, setFilteredEvents }) => {
     };
 
     const SearchContainer = () => {
-        const [searchQuery, setSearchQuery] = useState("");
         const inputRef = useRef(null);
 
         // Ensure input stays focused when search is open
@@ -132,14 +155,10 @@ const SearchComponent = ({ onSearch, onOpen, onClose, setFilteredEvents }) => {
                                     onChange={(e) =>
                                         setSearchQuery(e.target.value)
                                     }
-                                    // onClick={() => {
-                                    //     openSearch(); // Opens the search (if it has logic in parent component)
-                                    //     onOpen(); // Triggers any additional logic passed as onOpen prop
-                                    // }}
                                 />
                             </form>
                             <button type="submit" form="search-form">
-                                Search
+                                Confirm
                             </button>
                         </div>
                     )}
@@ -163,10 +182,6 @@ const SearchComponent = ({ onSearch, onOpen, onClose, setFilteredEvents }) => {
                                     onChange={(e) =>
                                         setSearchQuery(e.target.value)
                                     }
-                                    // onClick={() => {
-                                    //     openSearch(); // Opens the search (if it has logic in parent component)
-                                    //     onOpen(); // Triggers any additional logic passed as onOpen prop
-                                    // }}
                                 />
                             </form>
                             <button type="submit" form="search-form">
@@ -229,35 +244,52 @@ const SearchComponent = ({ onSearch, onOpen, onClose, setFilteredEvents }) => {
         );
     };
 
-    const handleTypeClick = (type) => {
-        console.log("Type clicked: ", type);
-        setFilteredEvents(events.filter((event) => event.type === type));
-        onClose();
+    const TypeComponent = () => {
+        const filteredTypes = uniqueTypes.filter((type) =>
+            type.toLowerCase().includes(searchQuery.toLowerCase())
+        );
+
+        const handleTypeClick = (type) => {
+            if (selectedTypes.includes(type)) {
+                setSelectedTypes(selectedTypes.filter((t) => t !== type));
+            } else {
+                setSelectedTypes([...selectedTypes, type]);
+            }
+        };
+
+        // const displaySelectedTypes = useMemo(() => {
+        return (
+            <>
+                {isSearchOpen && (
+                    <>
+                        <div id="search-results">
+                            <h3>Select Event Types</h3>
+                            {filteredTypes.map((type, index) => (
+                                <div
+                                    className={
+                                        selectedTypes.includes(type)
+                                            ? "selected search-result"
+                                            : "search-result"
+                                    }
+                                    key={index}
+                                    onClick={() => handleTypeClick(type)}
+                                >
+                                    {type}
+                                </div>
+                            ))}
+                        </div>
+                    </>
+                )}
+            </>
+        );
+        // }, [selectedTypes]);
+
+        // return <div id="search-results">{displaySelectedTypes}</div>;
     };
 
     const ResultsComponent = ({ searchResults, onSearch }) => {
-        const uniqueTypes = [...new Set(events.map((event) => event.type))];
-
         if (pickedFilter === "Type") {
-            return (
-                <>
-                    {isSearchOpen && (
-                        <>
-                            <div id="search-results">
-                                {uniqueTypes.map((type, index) => (
-                                    <div
-                                        className="search-result"
-                                        key={index}
-                                        onClick={() => handleTypeClick(type)}
-                                    >
-                                        {type}
-                                    </div>
-                                ))}
-                            </div>
-                        </>
-                    )}
-                </>
-            );
+            return TypeComponent();
         } else if (pickedFilter === "Place") {
             return (
                 <>

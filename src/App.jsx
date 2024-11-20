@@ -36,10 +36,12 @@ const App = () => {
 
     const error = (err) => {
         if (err.code === 1) {
-            alert("Please allow geolocation access");
+            // alert("Please allow geolocation access");
+            console.error("Please allow geolocation access");
         } else {
             console.error("Error retrieving location: ", err);
-            alert("Cannot get current location");
+            // alert("Cannot get current location");
+            console.error("Cannot get current location");
         }
     };
 
@@ -56,6 +58,7 @@ const App = () => {
                 onSearch={handleSearch}
                 onOpen={() => setIsMapOpen(false)}
                 onClose={() => setIsMapOpen(true)}
+                filteredEvents={filteredEvents}
                 setFilteredEvents={setFilteredEvents}
             />
 

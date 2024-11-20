@@ -140,7 +140,7 @@ const PopupContent = ({ marker }) => {
             >
                 More Info
             </a>
-            {marker.photo && (
+            {/* {marker.photo && (
                 <div style={{ marginTop: "10px" }}>
                     <img
                         src={marker.photo}
@@ -148,7 +148,7 @@ const PopupContent = ({ marker }) => {
                         style={{ width: "100%", height: "auto" }}
                     />
                 </div>
-            )}
+            )} */}
         </div>
     );
 };
