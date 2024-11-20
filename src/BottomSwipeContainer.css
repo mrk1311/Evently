@@ -27,7 +27,7 @@
 }
 
 .swipeable-container.open {
-    height: 70vh; /* Expanded height (adjust based on your preference) */
+    height: 85vh; /* Expanded height (adjust based on your preference) */
 }
 
 .header {
@@ -49,11 +49,19 @@
 .event {
     margin-bottom: 15px;
     cursor: pointer;
+    border: 1px solid black;
+    border-radius: 20px;
+    padding: 10px;
+}
+
+.event:hover {
+    background-color: #45a049;
 }
 
 .event h4 {
     font-size: 18px;
     margin-bottom: 5px;
+    margin-top: 5px;
 }
 
 .event p {
